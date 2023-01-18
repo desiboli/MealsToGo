@@ -11,6 +11,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeArea } from "./src/components/utils/safe-area.component";
 import { Ionicons } from "@expo/vector-icons";
 import { RestaurantsContextProvider } from "./src/services/restaurants/restaurants.context";
+import { LocationContextProvider } from "./src/services/location/location.context";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -89,15 +90,20 @@ export default function App() {
     <>
       <ThemeProvider theme={theme}>
         <SafeAreaProvider onLayout={onLayoutRootView}>
-          <RestaurantsContextProvider>
-            <NavigationContainer>
-              <Tab.Navigator screenOptions={createScreenOptions}>
-                <Tab.Screen name="Restaurants" component={RestaurantsScreen} />
-                <Tab.Screen name="Map" component={MapScreen} />
-                <Tab.Screen name="Settings" component={SettingsScreen} />
-              </Tab.Navigator>
-            </NavigationContainer>
-          </RestaurantsContextProvider>
+          <LocationContextProvider>
+            <RestaurantsContextProvider>
+              <NavigationContainer>
+                <Tab.Navigator screenOptions={createScreenOptions}>
+                  <Tab.Screen
+                    name="Restaurants"
+                    component={RestaurantsScreen}
+                  />
+                  <Tab.Screen name="Map" component={MapScreen} />
+                  <Tab.Screen name="Settings" component={SettingsScreen} />
+                </Tab.Navigator>
+              </NavigationContainer>
+            </RestaurantsContextProvider>
+          </LocationContextProvider>
         </SafeAreaProvider>
       </ThemeProvider>
 
