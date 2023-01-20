@@ -16,14 +16,14 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [error, setError] = useState([]);
   const auth = useRef(getAuth()).current;
 
-  // onAuthStateChanged(auth, (usr) => {
-  //   if (usr) {
-  //     setUser(usr);
-  //     setIsLoading(false);
-  //   } else {
-  //     setIsLoading(false);
-  //   }
-  // });
+  onAuthStateChanged(auth, (usr) => {
+    if (usr) {
+      setUser(usr);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  });
 
   const onLogin = (email, password) => {
     setIsLoading(true);
@@ -55,6 +55,13 @@ export const AuthenticationContextProvider = ({ children }) => {
       });
   };
 
+  const onLogout = () => {
+    signOut(auth).then(() => {
+      setUser(null);
+      setError(null);
+    });
+  };
+
   return (
     <AuthenticationContext.Provider
       value={{
@@ -64,6 +71,7 @@ export const AuthenticationContextProvider = ({ children }) => {
         error,
         onLogin,
         onRegister,
+        onLogout,
       }}
     >
       {children}
